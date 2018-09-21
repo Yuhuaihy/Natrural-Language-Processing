@@ -97,11 +97,21 @@ splitting off punctuations.
 
 def is_determiner(word):
     # replace this
-    return True if word == 'the' else False
+    s = set(['the', 'a','an', 'some','my', 'your', 'his', 'her', 'its', 'our', 'their'
+    , 'whose','this','that','those','these',
+    'few','little','much','many','lot','most','any','enougn',
+    'all', 'both', 'half','either','neither','each','every','other','another'])
+    return True if word in s else False
 
 def remove_determiners(text):
     # replace this
-    return 'dog is asleep in basket.'
+    l = text.split()
+    l_new = []
+    for word in l:
+        if not is_determiner(word):
+            l_new.append(word)
+            
+    return ' '.join(l_new)
 
 
 # PROBLEM 2 - remove interior of list
@@ -111,13 +121,12 @@ def remove_determiners(text):
 
 def remove_middle1(lst, first, last):
     # replace this, 
-    lst[3:8] = []
+    lst = lst[:first] + lst[last+1:]
     pass
 
 def remove_middle2(lst, first, last):
     # replace this
-    return [1, 2, 3, 9]
-    pass
+    return lst[:first] + lst[last+1:]
 
 
 # PROBLEM 3 - counting strings
