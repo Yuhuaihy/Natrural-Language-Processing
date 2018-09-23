@@ -101,7 +101,7 @@ def is_determiner(word):
     , 'whose','this','that','those','these',
     'few','little','much','many','lot','most','any','enougn',
     'all', 'both', 'half','either','neither','each','every','other','another'])
-    return True if word in s else False
+    return True if word.lower() in s else False
 
 def remove_determiners(text):
     # replace this
@@ -132,7 +132,13 @@ def remove_middle2(lst, first, last):
 # PROBLEM 3 - counting strings
 
 def count_strings(lst, chars):
-    return 2
+    s = set(chars)
+    count = 0
+    for l in lst:
+        if l[0] in s and l[-1] in s and len(l)>=3:
+            count += 1
+
+    return count
 
 
 # PROBLEM 4 - consonants
@@ -143,7 +149,24 @@ def has_most_consonants(text):
     if text == '':
         return []
     else:
-        return ['closed.', 'barked.']
+        s = text.split()
+        result = []
+        letters = set([chr(i) for i in range(97,123)])
+        contsonants = letters - set('aeoui')
+        max_count = 0
+        for word in s:
+            count = 0
+            for i in word:
+                if i in contsonants:
+                    count += 1
+            if count > max_count:
+                max_count = count
+                result = [word]
+            elif count == max_count:
+                result.append(word)
+            
+
+        return result
 
 
 
@@ -154,4 +177,20 @@ if __name__ == '__main__':
 
     result = is_determiner("Door")
     print(result)
-    
+    text = 'The dog is asleep in a basket.'
+    result = remove_determiners(text)
+    print(result)
+    lst = [1,2,3,4,5,6,7,8,9]
+    first = 2
+    last = 5
+    remove_middle1(lst,first,last)
+    print(lst)
+    result = remove_middle2(lst,first,last)
+    lst = ['the', 'cat', 'is', 'asleep','happy', 'pity']
+    result = count_strings(lst, 'apty')
+    print(result)
+    result = has_most_consonants(text)
+    print(result)
+
+
+
