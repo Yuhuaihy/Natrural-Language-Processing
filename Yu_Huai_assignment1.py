@@ -107,9 +107,10 @@ def remove_determiners(text):
     # replace this
     l = text.split()
     l_new = []
-    for word in l:
-        if not is_determiner(word):
-            l_new.append(word)
+    l_new = [a for a in l if not is_determiner(a)]
+    # for word in l:
+    #     if not is_determiner(word):
+    #         l_new.append(word)
             
     return ' '.join(l_new)
 
@@ -121,7 +122,8 @@ def remove_determiners(text):
 
 def remove_middle1(lst, first, last):
     # replace this, 
-    lst = lst[:first] + lst[last+1:]
+    lst[first:last+1] = []
+    ##lst[first:last] = ''
     pass
 
 def remove_middle2(lst, first, last):
@@ -157,7 +159,7 @@ def has_most_consonants(text):
         for word in s:
             count = 0
             for i in word:
-                if i in contsonants:
+                if i.lower() in contsonants:
                     count += 1
             if count > max_count:
                 max_count = count
@@ -183,6 +185,7 @@ if __name__ == '__main__':
     lst = [1,2,3,4,5,6,7,8,9]
     first = 2
     last = 5
+    ###negative index
     remove_middle1(lst,first,last)
     print(lst)
     result = remove_middle2(lst,first,last)
