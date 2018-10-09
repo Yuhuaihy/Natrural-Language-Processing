@@ -1,0 +1,117 @@
+Last login: Thu Mar 30 01:11:38 on ttys000
+AppledeMacBook-Pro-3:~ hy$ ls
+AnacondaProjects	Downloads		Public
+AndroidStudioProjects	Library			PycharmProjects
+Applications		Movies			VM Library
+Desktop			Music			xgboost
+Documents		Pictures
+AppledeMacBook-Pro-3:~ hy$ cd Desktop/deep-qa-master
+AppledeMacBook-Pro-3:deep-qa-master hy$ ls
+README.md				nn_layers.pyc
+TRAIN					parse.py
+TRAIN-ALL				run_build_datasets.sh
+alphabet.py				run_eval.sh
+alphabet.pyc				run_nnet.py
+conv1d.py				sgd_trainer.py
+embeddings				trec_eval-8.0
+extract_embeddings.py			utils.py
+jacana-qa-naacl2013-data-results	utils.pyc
+nn_layers.py
+AppledeMacBook-Pro-3:deep-qa-master hy$ python run_nnet.py TRAIN
+Running training in the TRAIN setting
+y_train (array([0, 1], dtype=int32), array([4370,  348]))
+y_dev (array([0, 1], dtype=int32), array([926, 222]))
+y_test (array([0, 1], dtype=int32), array([1233,  284]))
+q_train (4718, 33)
+q_dev (1148, 33)
+q_test (1517, 33)
+a_train (4718, 40)
+a_dev (1148, 40)
+a_test (1517, 40)
+Generating random vocabulary for word overlap indicator features with dim: 5
+Gaussian
+Loading word embeddings from TRAIN/emb_aquaint+wiki.txt.gz.ndim=50.bin.npy
+Word embedding matrix size: (17023, 50)
+batch_size 50
+n_epochs 25
+learning_rate 0.1
+max_norm 0
+Training nnet [num params: 106236]
+	FeedForwardNet [num params: 27615]
+		ParallelLookupTable [num params: 15]
+			LookupTableFastStatic: [17023    50]
+			LookupTableFast: [3 5]
+		ParallelLayer [num params: 27600]
+			FeedForwardNet [num params: 27600]
+				Conv2dLayer: filter_shape=[100   1   5  55]; input_shape=(50, 1, 41, 55)
+				NonLinearityLayer: b_shape=[100] activation=Elemwise{tanh,no_inplace}
+				KMaxPoolLayer: k_max=1
+		FlattenLayer
+	FeedForwardNet [num params: 27615]
+		ParallelLookupTable [num params: 15]
+			LookupTableFastStatic: [17023    50]
+			LookupTableFast: [3 5]
+		ParallelLayer [num params: 27600]
+			FeedForwardNet [num params: 27600]
+				Conv2dLayer: filter_shape=[100   1   5  55]; input_shape=(50, 1, 48, 55)
+				NonLinearityLayer: b_shape=[100] activation=Elemwise{tanh,no_inplace}
+				KMaxPoolLayer: k_max=1
+		FlattenLayer
+	PairwiseNoFeatsLayer: W=[100 100]
+	LinearLayer: W_shape=[201 201] b_shape=[201] activation=Elemwise{tanh,no_inplace}
+	LogisticRegression: W=[201   2], b=[2]
+Saving to exp.out/ndim=55;batch=50;max_norm=0;learning_rate=0.1;2017-03-30-01.35.39/nnet.dat
+Total params number: 106236
+Generating adadelta updates
+labels [0, 1]
+Zero out dummy word: True
+  9%|████▏                                       | 9/95 [00:01<00:12,  6.64it/s]epoch: 0 batch: 10 dev auc: 51.3241; test map: 51.5188; best_dev_acc: -inf
+ 20%|████████▌                                  | 19/95 [00:04<00:12,  5.98it/s]epoch: 0 batch: 20 dev auc: 54.5770; test map: 52.8630; best_dev_acc: 51.3241
+ 31%|█████████████▏                             | 29/95 [00:08<00:11,  5.90it/s]epoch: 0 batch: 30 dev auc: 54.7623; test map: 54.4359; best_dev_acc: 54.5770
+ 41%|█████████████████▋                         | 39/95 [00:11<00:09,  5.89it/s]epoch: 0 batch: 40 dev auc: 57.3901; test map: 56.9395; best_dev_acc: 54.7623
+ 52%|██████████████████████▏                    | 49/95 [00:15<00:07,  5.92it/s]epoch: 0 batch: 50 dev auc: 59.8632; test map: 59.2742; best_dev_acc: 57.3901
+ 62%|██████████████████████████▋                | 59/95 [00:18<00:06,  5.94it/s]epoch: 0 batch: 60 dev auc: 63.6867; test map: 60.6860; best_dev_acc: 59.8632
+ 73%|███████████████████████████████▏           | 69/95 [00:21<00:04,  5.93it/s]epoch: 0 batch: 70 dev auc: 65.5877; test map: 61.5946; best_dev_acc: 63.6867
+ 83%|███████████████████████████████████▊       | 79/95 [00:25<00:02,  5.95it/s]epoch: 0 batch: 80 dev auc: 67.9164; test map: 64.2870; best_dev_acc: 65.5877
+ 94%|████████████████████████████████████████▎  | 89/95 [00:28<00:01,  5.93it/s]epoch: 0 batch: 90 dev auc: 70.2367; test map: 66.7936; best_dev_acc: 67.9164
+ 99%|██████████████████████████████████████████▌| 94/95 [00:31<00:00,  3.47it/s]epoch: 0 batch: 95 dev auc: 70.4532; test map: 66.2115; best_dev_acc: 70.2367
+100%|███████████████████████████████████████████| 95/95 [00:33<00:00,  1.20it/s]
+epoch 0 took 33.4883 seconds
+  9%|████▏                                       | 9/95 [00:01<00:12,  6.90it/s]epoch: 1 batch: 10 dev auc: 70.6784; test map: 66.6694; best_dev_acc: 70.4532
+ 20%|████████▌                                  | 19/95 [00:04<00:12,  5.94it/s]epoch: 1 batch: 20 dev auc: 73.1213; test map: 69.3785; best_dev_acc: 70.6784
+ 31%|█████████████▏                             | 29/95 [00:08<00:11,  5.92it/s]epoch: 1 batch: 30 dev auc: 74.7704; test map: 70.4581; best_dev_acc: 73.1213
+ 41%|█████████████████▋                         | 39/95 [00:11<00:09,  5.98it/s]epoch: 1 batch: 40 dev auc: 74.7850; test map: 69.8044; best_dev_acc: 74.7704
+ 52%|██████████████████████▏                    | 49/95 [00:14<00:07,  5.91it/s]epoch: 1 batch: 50 dev auc: 75.4198; test map: 70.8307; best_dev_acc: 74.7850
+ 62%|██████████████████████████▋                | 59/95 [00:18<00:06,  5.96it/s]epoch: 1 batch: 60 dev auc: 75.9953; test map: 70.9322; best_dev_acc: 75.4198
+ 73%|███████████████████████████████▏           | 69/95 [00:21<00:04,  5.92it/s]epoch: 1 batch: 70 dev auc: 76.2473; test map: 70.2639; best_dev_acc: 75.9953
+ 94%|████████████████████████████████████████▎  | 89/95 [00:27<00:00,  6.48it/s]epoch: 1 batch: 90 dev auc: 76.2764; test map: 71.5670; best_dev_acc: 76.2473
+ 99%|██████████████████████████████████████████▌| 94/95 [00:30<00:00,  3.47it/s]epoch: 1 batch: 95 dev auc: 76.3475; test map: 71.5628; best_dev_acc: 76.2764
+100%|███████████████████████████████████████████| 95/95 [00:32<00:00,  1.20it/s]
+epoch 1 took 32.2401 seconds
+ 20%|████████▌                                  | 19/95 [00:03<00:11,  6.48it/s]epoch: 2 batch: 20 dev auc: 76.5814; test map: 70.8654; best_dev_acc: 76.3475
+ 31%|█████████████▏                             | 29/95 [00:06<00:11,  5.92it/s]epoch: 2 batch: 30 dev auc: 76.8777; test map: 70.7632; best_dev_acc: 76.5814
+ 52%|██████████████████████▏                    | 49/95 [00:12<00:07,  6.45it/s]epoch: 2 batch: 50 dev auc: 77.2634; test map: 70.7037; best_dev_acc: 76.8777
+ 73%|███████████████████████████████▏           | 69/95 [00:18<00:04,  6.42it/s]epoch: 2 batch: 70 dev auc: 78.0097; test map: 70.1412; best_dev_acc: 77.2634
+100%|███████████████████████████████████████████| 95/95 [00:26<00:00,  2.28it/s]
+epoch 2 took 26.6350 seconds
+  9%|████▏                                       | 9/95 [00:01<00:12,  6.97it/s]epoch: 3 batch: 10 dev auc: 79.4014; test map: 70.8701; best_dev_acc: 78.0097
+100%|███████████████████████████████████████████| 95/95 [00:23<00:00,  2.27it/s]
+epoch 3 took 23.7798 seconds
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 95/95 [00:22<00:00,  2.27it/s]
+epoch 4 took 22.1388 seconds
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 95/95 [00:22<00:00,  2.28it/s]
+epoch 5 took 22.0633 seconds
+ 41%|██████████████████████████████████████████████████████████▎                                                                                   | 39/95 [00:08<00:08,  6.45it/s]epoch: 6 batch: 40 dev auc: 79.4889; test map: 73.2461; best_dev_acc: 79.4014
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 95/95 [00:23<00:00,  2.28it/s]
+epoch 6 took 23.2209 seconds
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 95/95 [00:22<00:00,  2.27it/s]
+epoch 7 took 22.1200 seconds
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 95/95 [00:22<00:00,  2.28it/s]
+epoch 8 took 22.1004 seconds
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 95/95 [00:22<00:00,  2.29it/s]
+Quitting after of no update of the best score on dev set 3
+Training took: 249.8514 seconds
+Running trec_eval script...
+map            	all	0.7325
+recip_rank     	all	0.8018
+AppledeMacBook-Pro-3:deep-qa-master hy$ 
