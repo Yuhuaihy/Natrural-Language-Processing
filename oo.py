@@ -63,7 +63,7 @@ if __name__ == '__main__':
     zoo = Zoo()
     zoo.animals.append(a)
     zoo.animals.append(d)
-    print(len(zoo))
+    print(len(zoo)) ##__len__()
     getattr(d,'name')
 
     print(getattr(d,'age',10))
